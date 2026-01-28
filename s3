@@ -1,0 +1,117 @@
+## STEP 2: Create S3 Bucket
+
+1. Search **S3** → Open it
+2. Click **Create bucket**
+
+Fill:
+
+* Bucket name: `my-static-website-smk`
+* Region: your choice (example: ap-south-1)
+
+Permissions:
+
+* ❌ Uncheck **Block all public access**
+* ✔ Tick acknowledgment
+
+Click **Create bucket**
+
+---
+
+## STEP 3: Create HTML File
+
+Create file on your computer:
+
+### index.html
+
+```html
+<html>
+<head><title>My Website</title></head>
+<body>
+<h1>Welcome to My Static Website</h1>
+<p>Hosted using AWS S3</p>
+</body>
+</html>
+```
+
+---
+
+## STEP 4: Upload HTML to S3
+
+1. Open your bucket
+2. Click **Upload**
+3. Click **Add files**
+4. Select `index.html`
+5. Click **Upload**
+
+---
+
+## STEP 5: Enable Static Website Hosting
+
+1. Open **Properties** tab
+2. Scroll to **Static website hosting**
+3. Click **Edit**
+4. Enable → **Host a static website**
+5. Index document: `index.html`
+6. Save changes
+
+---
+
+## STEP 6: Allow Public Access
+
+### A) Disable public block
+
+Go to:
+
+Permissions → Block public access → Edit
+
+Turn OFF:
+
+* Block all public access
+
+Save.
+
+---
+
+### B) Add Bucket Policy
+
+Go to:
+
+Permissions → Bucket policy → Edit
+
+Paste:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadGetObject",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::my-static-website-smk/*"
+    }
+  ]
+}
+```
+
+Click **Save changes**
+
+---
+
+## STEP 7: Get Website URL
+
+1. Go to **Properties**
+2. Scroll to **Static website hosting**
+3. Copy **Endpoint URL**
+
+Example:
+
+```
+http://my-static-website-smk.s3-website.ap-south-1.amazonaws.com
+```
+
+Open in browser 🎉
+
+---
+
