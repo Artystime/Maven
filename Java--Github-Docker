@@ -1,0 +1,164 @@
+
+A company wants to automate build and packaging of its **Employee Management application**.
+# 🏗️ Step 1 – Create Sample Application
+
+Create a folder:
+
+```
+employee-management-app
+```
+
+Create file **Main.java**
+
+``
+
+  public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello from Docker!");
+    }
+}
+
+# 🐳 Step 2 – Create Dockerfile
+
+Create file **Dockerfile** (no extension)
+
+```dockerfile
+FROM eclipse-temurin:21-jdk
+
+WORKDIR /app
+
+COPY . .
+
+RUN javac Main.java
+
+CMD ["java", "Main"]
+```
+
+---
+
+# 🚫 Step 3 – Create .dockerignore
+
+Create file named **.dockerignore**
+
+```
+*.class
+.git
+.github
+```
+
+---
+
+# 🌐 Step 4 – Create GitHub Repository
+
+1. Go to [https://github.com](https://github.com)
+2. Click **New repository**
+3. Name: employee-management-app
+4. Public → Create
+
+---
+
+# 📤 Step 5 – Push Code to GitHub
+
+Open terminal in project folder:
+
+```bash
+git init
+git add .
+git commit -m "Employee management app"
+git branch -M main
+git remote add origin https://github.com/USERNAME/employee-management-app.git
+git push -u origin main
+```
+
+---
+
+# ⚙️ Step 6 – Create GitHub Actions Pipeline
+
+Create folders:
+
+```
+.github/workflows
+```
+
+Create file:
+
+```
+docker-build.yml
+```
+
+Paste:
+
+```yaml
+name: Build Employee App Docker Image
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build Docker image
+      run: docker build -t employee-app .
+
+    - name: Show Docker images
+      run: docker images
+```
+
+---
+
+# 📤 Step 7 – Push Pipeline Files
+
+```bash
+git add .
+git commit -m "Add GitHub Actions pipeline"
+git push
+```
+
+---
+
+# ✅ Step 8 – Verify Pipeline
+
+1. Open repository
+2. Click **Actions** tab
+3. Open latest workflow
+4. Ensure **green tick**
+
+---
+
+
+
+The Employee Management application source code was pushed to a GitHub repository. A Dockerfile was created to containerize the application. GitHub Actions was configured using a workflow file to automatically build the application and generate a Docker image on every push to the main branch. The pipeline execution was verified successfully from the GitHub Actions dashboard, demonstrating automated build and container creation.
+
+---
+
+# 🗺️ Architecture Diagram
+
+```
+Developer → GitHub Repo → GitHub Actions → Docker Build → Image Created
+```
+
+---
+
+# 🎤 Viva Ready Lines
+
+* GitHub Actions is used for CI
+* Dockerfile defines container steps
+* Image is built on cloud runner
+* Pipeline triggers on push
+
+---
+
+# 🏁 Completed Outcome
+
+✔ Source code in GitHub
+✔ CI pipeline configured
+✔ Docker image created
+✔ Automation verified
+
+
