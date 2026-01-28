@@ -1,0 +1,160 @@
+# ✅ Question 3 (Problem Statement)
+
+> **Design and deploy a static website using Docker and host it on AWS EC2 instance. The website should be accessible using the public IP address of the EC2 instance.**
+
+## 🟢 Step 1 – Install Docker on Local Machine
+
+Check:
+
+```bash
+docker --version
+```
+
+If not installed → Install Docker Desktop.
+
+---
+
+## 🟢 Step 2 – Create Project Folder
+
+```bash
+mkdir mywebsite
+cd mywebsite
+```
+
+---
+
+## 🟢 Step 3 – Create Static Website
+
+Create file: `index.html`
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Static Website</title>
+</head>
+<body>
+<h1>Welcome to Docker Website</h1>
+<p>Hosted on AWS EC2</p>
+</body>
+</html>
+```
+
+---
+
+## 🟢 Step 4 – Create Dockerfile
+
+Create file: `Dockerfile`
+
+```dockerfile
+FROM nginx:alpine
+COPY index.html /usr/share/nginx/html/index.html
+EXPOSE 80
+```
+
+---
+
+## 🟢 Step 5 – Build Docker Image (Local)
+
+```bash
+docker build -t college-site .
+```
+
+---
+
+## 🟢 Step 6 – Test Locally
+
+```bash
+docker run -d -p 8080:80 college-site
+```
+
+Open:
+
+```
+http://localhost:8080
+```
+
+Stop:
+
+```bash
+docker stop <container-id>
+```
+
+---
+
+## 🟢 Step 7 – Create AWS EC2 Instance
+
+* Ubuntu 22.04
+* Instance type: t2.micro
+* Open ports:
+
+  * 22 (SSH)
+  * 80 (HTTP)
+
+---
+
+## 🟢 Step 8 – Connect to EC2
+
+```bash
+ssh -i key.pem ubuntu@PUBLIC_IP
+```
+
+---
+
+## 🟢 Step 9 – Install Docker on EC2
+
+```bash
+sudo apt update
+sudo apt install docker.io -y
+sudo systemctl start docker
+sudo usermod -aG docker ubuntu
+exit
+```
+
+Login again.
+
+---
+
+## 🟢 Step 10 – Copy Project to EC2
+
+From local:
+
+```bash
+scp -i key.pem -r mywebsite ubuntu@PUBLIC_IP:/home/ubuntu/
+```
+
+---
+
+## 🟢 Step 11 – Build Image on EC2
+
+```bash
+cd mywebsite
+docker build -t college-site .
+```
+
+---
+
+## 🟢 Step 12 – Run Container on EC2
+
+```bash
+docker run -d -p 80:80 --name website college-site
+```
+
+---
+
+## 🟢 Step 13 – Access Website
+
+Open browser:
+
+```
+http://PUBLIC_IP
+```
+
+---
+
+# ✅ Final Result
+
+Static website successfully hosted using Docker on AWS EC2.
+
+---
+
