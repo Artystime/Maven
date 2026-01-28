@@ -1,0 +1,177 @@
+
+
+# Question 2: Automatic Build of Java Project using GitHub Actions & Maven
+
+---
+
+## Step 1: Install Java (Prerequisite)
+
+```cmd
+java -version
+```
+
+Installed JDK 21 and verified Java installation.
+
+---
+
+## Step 2: Download and Install Maven
+
+1. Downloaded Maven from: [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi)
+2. Extracted to:
+
+```
+C:\Program Files\Apache Software Foundation\apache-maven-3.9.12
+```
+
+---
+
+## Step 3: Configure Environment Variables
+
+### Added System Variable:
+
+```
+MAVEN_HOME = C:\Program Files\Apache Software Foundation\apache-maven-3.9.12
+```
+
+### Updated PATH:
+
+```
+%MAVEN_HOME%\bin
+```
+
+---
+
+## Step 4: Verify Maven Installation
+
+```cmd
+mvn -version
+```
+
+Output:
+
+```
+Apache Maven 3.9.12
+Java version: 21
+```
+
+---
+
+## Step 5: Create Java Maven Project
+
+```cmd
+mvn archetype:generate -DgroupId=com.college -DartifactId=website -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+```
+
+```cmd
+cd website
+mvn clean install
+```
+
+Result: **BUILD SUCCESS**
+
+---
+
+## Step 6: Create GitHub Repository
+
+Created new repository:
+
+```
+java-ci-project
+```
+
+---
+
+## Step 7: Push Java Project to GitHub
+
+```cmd
+git init
+git add .
+git commit -m "Initial Java Maven project"
+git remote add origin https://github.com/USERNAME/java-ci-project.git
+git branch -M main
+git push -u origin main
+```
+
+---
+
+## Step 8: Create GitHub Actions Workflow
+
+Created folders:
+
+```cmd
+mkdir .github
+mkdir .github\workflows
+```
+
+Created file:
+
+```
+.github/workflows/maven-build.yml
+```
+
+---
+
+## Step 9: Add Workflow Code
+
+```yaml
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Build with Maven
+      run: mvn clean install
+```
+
+---
+
+## Step 10: Push Workflow to GitHub
+
+```cmd
+git add .
+git commit -m "Add GitHub Actions CI pipeline"
+git push
+```
+
+---
+
+## Step 11: Verify Automatic Build
+
+1. Opened GitHub repository
+2. Opened **Actions** tab
+3. Observed workflow running automatically on push
+
+---
+
+## Step 12: Test Auto Trigger
+
+```cmd
+git commit -am "Test auto build"
+git push
+```
+
+Build triggered automatically again ✅
+
+---
+
+# Final Result
+
+✔ Java project pushed to GitHub
+✔ Maven installed and configured
+✔ GitHub Actions CI pipeline created
+✔ Automatic build on every push implemented
+
