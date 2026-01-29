@@ -1,0 +1,194 @@
+---
+
+# 3) Deploy a Java Application Using Docker on EC2 (Step-by-Step)
+
+---
+
+## Step 1: Create / Build Java Application
+
+### 1.1 Create Java file
+
+```bash
+mkdir java-app
+cd java-app
+nano HelloWorld.java
+```
+
+Paste:
+
+```java
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Java Application Running Successfully in Docker on EC2!");
+    }
+}
+```
+
+Save & exit.
+
+---
+
+### 1.2 Compile Java program
+
+```bash
+javac HelloWorld.java
+```
+
+Check:
+
+```bash
+ls
+```
+
+You should see:
+
+```
+HelloWorld.java
+HelloWorld.class
+```
+
+---
+
+## Step 2: Create Dockerfile
+
+Create Dockerfile:
+
+```bash
+nano Dockerfile
+```
+
+Paste:
+
+```dockerfile
+FROM openjdk:17
+WORKDIR /app
+COPY HelloWorld.class .
+CMD ["java", "HelloWorld"]
+```
+
+Save.
+
+---
+
+## Step 3: Build Docker Image
+
+```bash
+docker build -t java-docker-app .
+```
+
+Verify:
+
+```bash
+docker images
+```
+
+---
+
+## Step 4: Launch EC2 Instance (AWS)
+
+1. Go to **AWS Console → EC2**
+2. Click **Launch Instance**
+3. Select **Ubuntu 22.04**
+4. Choose **t2.micro**
+5. Create / select key pair
+6. Allow **SSH (port 22)**
+7. Launch
+
+---
+
+## Step 5: Connect to EC2
+
+```bash
+ssh -i yourkey.pem ubuntu@EC2_PUBLIC_IP
+```
+
+---
+
+## Step 6: Install Docker on EC2
+
+```bash
+sudo apt update
+sudo apt install docker.io -y
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker ubuntu
+exit
+```
+
+Reconnect:
+
+```bash
+ssh -i yourkey.pem ubuntu@EC2_PUBLIC_IP
+```
+
+---
+
+## Step 7: Copy Project to EC2
+
+From local system:
+
+```bash
+scp -i yourkey.pem -r java-app ubuntu@EC2_PUBLIC_IP:/home/ubuntu/
+```
+
+On EC2:
+
+```bash
+cd java-app
+```
+
+---
+
+## Step 8: Build Docker Image on EC2
+
+```bash
+docker build -t java-docker-app .
+```
+
+---
+
+## Step 9: Run Docker Container
+
+```bash
+docker run --name java-container java-docker-app
+```
+
+---
+
+## Step 10: Verify Output
+
+You will see:
+
+```
+Java Application Running Successfully in Docker on EC2!
+```
+
+Check container:
+
+```bash
+docker ps -a
+```
+
+Check logs:
+
+```bash
+docker logs java-container
+```
+
+---
+
+# Final Result
+
+✔ Java application built
+✔ Docker image created
+✔ Container running on EC2
+✔ Output verified
+
+---
+
+# Learning Outcome
+
+> Successfully deployed Java application using Docker ensuring consistency across environments.
+
+---
+
