@@ -1,0 +1,136 @@
+
+
+---
+
+# Q2) Automate Build & Packaging of Employee Management Application using GitHub Actions
+
+---
+
+## Step 1: Push Application Code to GitHub
+
+```bash
+git init
+git add .
+git commit -m "Initial commit - Employee Management App"
+git branch -M main
+git remote add origin https://github.com/username/employee-management.git
+git push -u origin main
+```
+
+---
+
+## Step 2: Create Dockerfile
+
+Create file **Dockerfile** in project root:
+
+```dockerfile
+FROM openjdk:17
+WORKDIR /app
+COPY target/employee-app.jar app.jar
+CMD ["java", "-jar", "app.jar"]
+```
+
+---
+
+## Step 3: Create GitHub Actions Workflow
+
+Create folders:
+
+```bash
+mkdir -p .github/workflows
+```
+
+Create file:
+
+```bash
+.github/workflows/ci-cd.yml
+```
+
+---
+
+## Step 4: Configure GitHub Actions Pipeline
+
+Paste:
+
+```yaml
+name: Employee App CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-dockerize:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Build Application
+      run: mvn clean package
+
+    - name: Build Docker Image
+      run: docker build -t employee-app:latest .
+```
+
+---
+
+## Step 5: Push Workflow to GitHub
+
+```bash
+git add .
+git commit -m "Add GitHub Actions pipeline"
+git push
+```
+
+---
+
+## Step 6: Verify Pipeline Execution
+
+1. Open GitHub repository
+2. Go to **Actions tab**
+3. Select workflow **Employee App CI Pipeline**
+4. Check all steps are ✔️ successful
+
+---
+
+## Final Verification
+
+Pipeline should show:
+
+✔ Code checkout
+✔ Java setup
+✔ Application build
+✔ Docker image creation
+
+---
+
+# Expected Outcome (Write in exam)
+
+* Basic DevOps CI pipeline created
+* Automated build using GitHub Actions
+* Docker image generated automatically
+
+---
+
+# Diagram (Optional for exam)
+
+```
+Developer → GitHub Repo → GitHub Actions
+                         ↓
+                    Build App
+                         ↓
+                    Docker Image
+```
+
+---
+
+
+
